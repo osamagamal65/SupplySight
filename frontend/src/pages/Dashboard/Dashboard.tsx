@@ -8,6 +8,7 @@ import { GET_PRODUCTS, GET_KPIS } from '../../graphql/queries';
 import type { DateRange } from '../../shared/types';
 import { LineChartComponent } from './components/linechart';
 import { WarehouseFilter } from './components/WarehouseFilter';
+import ErrorMessage from './components/ErrorMessage';
 
 export const Dashboard = () => {
   const [search, setSearch] = useState('');
@@ -20,7 +21,8 @@ export const Dashboard = () => {
   const {
     loading: productsLoading,
     data: productsData,
-    refetch: refetchProducts
+    refetch: refetchProducts,
+    error: productsError,
   } = useQuery(GET_PRODUCTS, {
     variables: {
       search: search || undefined,
@@ -31,7 +33,7 @@ export const Dashboard = () => {
     },
   });
 
-  const { loading: kpisLoading, data: kpisData, refetch: refetchKPIs } = useQuery(GET_KPIS, {
+  const { loading: kpisLoading, data: kpisData, refetch: refetchKPIs, error: kpisError } = useQuery(GET_KPIS, {
     variables: { range: dateRange },
   });
 
@@ -72,6 +74,31 @@ export const Dashboard = () => {
   const totalDemand = products.reduce((sum, p) => sum + p.demand, 0);
   const fillRate = totalDemand > 0 ? Math.round((totalStock / totalDemand) * 100) : 0;
 
+  // Handle errors
+  if (productsError || kpisError) {
+    return (
+      <div className="min-h-screen bg-wasabi-50 p-6">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+          {productsError && (
+            <ErrorMessage 
+              error={productsError} 
+              onRetry={() => {
+                refetchProducts();
+                if (kpisError) refetchKPIs();
+              }} 
+            />
+          )}
+          {kpisError && !productsError && (
+            <ErrorMessage 
+              error={kpisError} 
+              onRetry={refetchKPIs} 
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-wasabi-50">
       <header className="bg-wasabi-500 text-white shadow-sm">
@@ -98,6 +125,7 @@ export const Dashboard = () => {
         </div>
       </header>
 
+      
       <main className="container flex flex-col gap-6 mx-auto px-4 py-6">
       
         {(productsLoading || kpisLoading) && (
