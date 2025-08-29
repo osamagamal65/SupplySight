@@ -74,31 +74,6 @@ export const Dashboard = () => {
   const totalDemand = products.reduce((sum, p) => sum + p.demand, 0);
   const fillRate = totalDemand > 0 ? Math.round((totalStock / totalDemand) * 100) : 0;
 
-  // Handle errors
-  if (productsError || kpisError) {
-    return (
-      <div className="min-h-screen bg-wasabi-50 p-6">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-          {productsError && (
-            <ErrorMessage 
-              error={productsError} 
-              onRetry={() => {
-                refetchProducts();
-                if (kpisError) refetchKPIs();
-              }} 
-            />
-          )}
-          {kpisError && !productsError && (
-            <ErrorMessage 
-              error={kpisError} 
-              onRetry={refetchKPIs} 
-            />
-          )}
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen bg-wasabi-50">
       <header className="bg-wasabi-500 text-white shadow-sm">
@@ -125,9 +100,7 @@ export const Dashboard = () => {
         </div>
       </header>
 
-      
       <main className="container flex flex-col gap-6 mx-auto px-4 py-6">
-      
         {(productsLoading || kpisLoading) && (
           <div className="fixed inset-0 bg-wasabi-50 opacity-60 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
@@ -145,41 +118,72 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        {/* Main Content */}
+        {/* KPI Cards with independent error handling */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <KPICard 
-            title="Total Stock" 
-            value={productsLoading ? '...' : totalStock.toString()} 
-            trend={productsLoading ? 'none' : 'up'} 
-            loading={productsLoading}
-          />
-          <KPICard 
-            title="Total Demand" 
-            value={productsLoading ? '...' : totalDemand.toString()} 
-            trend={productsLoading ? 'none' : 'down'} 
-            loading={productsLoading}
-          />
-          <KPICard 
-            title="Fill Rate" 
-            value={productsLoading ? '...' : `${fillRate}%`} 
-            trend={productsLoading ? 'none' : fillRate > 80 ? 'up' : 'down'}
-            loading={productsLoading}
-          />
+          {productsError ? (
+            <div className="col-span-3">
+              <ErrorMessage 
+                error={productsError}
+                onRetry={refetchProducts}
+              />
+            </div>
+          ) : (
+            <>
+              <KPICard 
+                title="Total Stock" 
+                value={productsLoading ? '...' : totalStock.toString()} 
+                trend={productsLoading ? 'none' : 'up'} 
+                loading={productsLoading}
+              />
+              <KPICard 
+                title="Total Demand" 
+                value={productsLoading ? '...' : totalDemand.toString()} 
+                trend={productsLoading ? 'none' : 'down'} 
+                loading={productsLoading}
+              />
+              <KPICard 
+                title="Fill Rate" 
+                value={productsLoading ? '...' : `${fillRate}%`} 
+                trend={productsLoading ? 'none' : fillRate > 80 ? 'up' : 'down'}
+                loading={productsLoading}
+              />
+            </>
+          )}
         </div>
 
+        {/* Chart with independent error handling */}
         <div className="bg-white shadow rounded-lg p-6">
-          <LineChartComponent data={kpis} />
+          {kpisError ? (
+            <div className="p-4">
+              <ErrorMessage 
+                error={kpisError}
+                onRetry={refetchKPIs}
+              />
+            </div>
+          ) : (
+            <LineChartComponent data={kpis} />
+          )}
         </div>
 
+        {/* Product Table with independent error handling */}
         <div className="bg-white shadow rounded-lg p-6">
-          <ProductTable
-            products={products}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            totalItems={totalItems}
-            itemsPerPage={itemsPerPage}
-          />
+          {productsError ? (
+            <div className="p-4">
+              <ErrorMessage 
+                error={productsError}
+                onRetry={refetchProducts}
+              />
+            </div>
+          ) : (
+            <ProductTable
+              products={products}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
         </div>
       </main>
     </div>
