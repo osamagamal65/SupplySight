@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBadge } from './StatusBadge';
-import { ProductDetailsSidebar } from './ProductDetailsSidebar';
+import { ProductDetailsSidebar } from '../ProductDetailsSidebar';
 import type { Product } from '@shared/types';
 
 interface ProductTableProps {

@@ -1,6 +1,6 @@
 // src/components/WarehouseFilter.tsx
 import React from 'react';
-import { GET_WAREHOUSES } from '../graphql/queries';
+import { GET_WAREHOUSES } from '../../../graphql/queries';
 import { useQuery } from '@apollo/client/react';
 
 interface Warehouse {

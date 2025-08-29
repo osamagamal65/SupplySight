@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/client/react';
 import type { Product } from '@shared/types';
-import { TRANSFER_STOCK, UPDATE_DEMAND, GET_WAREHOUSES } from '../graphql/queries';
+import { TRANSFER_STOCK, UPDATE_DEMAND, GET_WAREHOUSES } from '../../graphql/queries';
 
 type TabType = 'details' | 'updateDemand' | 'transferStock';
 
@@ -165,14 +165,22 @@ export const ProductDetailsSidebar: React.FC<ProductDetailsSidebarProps> = ({
                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-wasabi-500 focus:border-wasabi-500 sm:text-sm rounded-md"
                     disabled={warehousesLoading}
                 >
-                    <option value="">Select a warehouse</option>
-                    {warehousesData?.warehouses
-                        ?.filter((warehouse: any) => warehouse.code !== product.warehouse)
-                        .map((warehouse: any) => (
-                            <option key={warehouse.code} value={warehouse.code}>
-                                {warehouse.name} ({warehouse.city}, {warehouse.country})
-                            </option>
-                        ))}
+                    <option value="">
+                        {warehousesLoading ? 'Loading warehouses...' : 'Select a warehouse'}
+                    </option>
+                    {warehousesLoading ? (
+                        <option disabled>Loading...</option>
+                    ) : warehousesData?.warehouses?.filter((warehouse: any) => warehouse.code !== product.warehouse).length === 0 ? (
+                        <option disabled>No other warehouses available</option>
+                    ) : (
+                        warehousesData?.warehouses
+                            ?.filter((warehouse: any) => warehouse.code !== product.warehouse)
+                            .map((warehouse: any) => (
+                                <option key={warehouse.code} value={warehouse.code}>
+                                    {warehouse.name} ({warehouse.city}, {warehouse.country})
+                                </option>
+                            ))
+                    )}
                 </select>
                 {warehousesError && (
                     <p className="mt-2 text-sm text-red-600">
