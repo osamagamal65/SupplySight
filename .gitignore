@@ -45,3 +45,7 @@ out/
 .cache/
 .temp/
 .tmp/
+
+# Testing
+**/coverage
+**/.vitest
