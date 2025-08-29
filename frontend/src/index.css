@@ -1,1 +1,87 @@
 @import "tailwindcss";
+
+@theme {
+  --color-wasabi-50: #f9faeb;
+  --color-wasabi-100: #f1f3d4;
+  --color-wasabi-200: #e4e8ae;
+  --color-wasabi-300: #cfd87e;
+  --color-wasabi-400: #bac655;
+  --color-wasabi-500: #9cab37;
+  --color-wasabi-600: #7d8b29;
+  --color-wasabi-700: #5d6823;
+  --color-wasabi-800: #4b5420;
+  --color-wasabi-900: #40481f;
+  --color-wasabi-950: #21270c;
+  /* make wasabi the default color */
+  --color-primary-50: #f9faeb;
+  --color-primary-100: #f1f3d4;
+  --color-primary-200: #e4e8ae;
+  --color-primary-300: #cfd87e;
+  --color-primary-400: #bac655;
+  --color-primary-500: #9cab37;
+  --color-primary-600: #7d8b29;
+  --color-primary-700: #5d6823;
+  --color-primary-800: #4b5420;
+  --color-primary-900: #40481f;
+  --color-primary-950: #21270c;
+}
+body {
+  @apply bg-wasabi-50 text-wasabi-900;
+}
+
+/* Example component classes */
+.btn-primary {
+  @apply bg-wasabi-500 text-white px-4 py-2 rounded-md hover:bg-wasabi-600 transition-colors;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-md p-6;
+}
+:root {
+  --color-primary-50: #f9faeb;
+  --color-primary-100: #f1f3d4;
+  --color-primary-200: #e4e8ae;
+  --color-primary-300: #cfd87e;
+  --color-primary-400: #bac655;
+  --color-primary-500: #9cab37;
+  --color-primary-600: #7d8b29;
+  --color-primary-700: #5d6823;
+  --color-primary-800: #4b5420;
+  --color-primary-900: #40481f;
+  --color-primary-950: #21270c;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400;
+}
+
+/* Custom form elements */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  @apply border border-gray-300 rounded-md shadow-sm focus:ring-wasabi-500 focus:border-wasabi-500 block w-full sm:text-sm p-2;
+}
+
+/* Status badges */
+.status-healthy {
+  @apply bg-green-100 text-green-800;
+}
+
+status-low {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-critical {
+  @apply bg-red-100 text-red-800;
+}

@@ -3,20 +3,25 @@
     "version": "1.0.0",
     "private": true,
     "workspaces": [
-      "backend",
-      "frontend"
+        "backend",
+        "frontend"
     ],
     "scripts": {
-      "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
-      "start:backend": "cd backend && npm run dev",
-      "start:frontend": "cd frontend && npm run dev",
-      "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
-      "build": "npm run build:backend && npm run build:frontend",
-      "build:backend": "cd backend && npm run build",
-      "build:frontend": "cd frontend && npm run build"
+        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "cd backend && npm run dev",
+        "start:frontend": "cd frontend && npm run dev",
+        "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+        "build": "npm run build:backend && npm run build:frontend",
+        "build:backend": "cd backend && npm run build",
+        "build:frontend": "cd frontend && npm run build"
     },
     "devDependencies": {
-      "concurrently": "^8.2.2",
-      "typescript": "^5.0.0"
+        "concurrently": "^8.2.2",
+        "typescript": "^5.0.0"
+    },
+    "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
+    "dependencies": {
+        "@apollo/client": "^4.0.3",
+        "graphql": "^16.11.0"
     }
-  }      
+}
